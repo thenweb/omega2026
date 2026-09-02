@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ES">
+
+<head>
+
+    <meta charset="utf-8">
+	    <title>Radio Cristiana Omega</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+<!-- Configuración Open Graph Unificada para WhatsApp -->
+<meta property="og:title" content="Radio Cristiana Omega" />
+<meta property="og:description" content="Música cristiana, Anunciando el Evangelio" />
+<meta property="og:url" content="https://thenweb.github.io/radiomegaonline/">
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Música Cristiana" />
+<meta property="og:locale" content="es_ES" />
+
+<meta property="og:image" content="https://i.imgur.com/wbNXJpr.jpeg" />
+<meta property="og:image:secure_url" content="https://i.imgur.com/wbNXJpr.jpeg" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="200" />
+<meta property="og:image:height" content="200" />
+<meta property="og:image: alt" content="web radio" />
+
+    <link rel="icon" type="image/png" href="./img/cover-500.png" />
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="/manifest.json">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+
+    <!-------- Agregar a Favoritos----->
+    <script language="JavaScript">
+        function agregar() {
+            var url = "https://thenweb.github.io/radiomegaonline";
+            var titulo = "Radio Cristiana Omega";
+            if (window.sidebar) {
+                // Mozilla Firefox Bookmark
+                window.sidebar.addPanel(titulo, url, "");
+            } else if (window.external) { // IE Favorite
+                if (window.ActiveXObject) {
+                    //ie
+                    window.external.AddFavorite(url, titulo);
+                } else { //chrome
+                    alert('Presiona Crtl+D para Agregar a Marcadores');
+                }
+            } else if (window.opera && window.print) { // Opera
+                return true;
+            } else { //safri
+                alert('Presiona Crtl+D para Agregar a Marcadores');
+            }
+        }
+
+    </script>
+
+
+    <script>
+        //Audio al cargar pagina al hacer click      
+        const playSound = function() {
+            var sonido = new Audio("audio/audio_tecnologia.mp3");
+            sonido.play();
+            document.removeEventListener('click', playSound);
+        }
+        document.addEventListener('click', playSound);
+
+    </script>
+
+    <script>
+        // Sonido de Botones
+        var sonido = new Audio();
+        sonido.src = "audio/Beeps.mp3";
+
+    </script>
+
+    <!----CSS: Estilos de la Pantalla de Carga ---->
+    <style>
+        /* Capa superior que cubre todo */
+        #pantalla-bienvenida {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100000;
+            /* Siempre por encima de todo */
+            transition: opacity 1.5s ease-in-out;
+            /* Desaparición lenta */
+        }
+
+        /* Logo Responsive */
+        #logo-bienvenida {
+            width: 40%;
+            max-width: 250px;
+            height: auto;
+            opacity: 0;
+            /* Inicia invisible */
+            transform: scale(0.9);
+            transition: opacity 2.5s ease, transform 2.5s ease;
+            /* Aparición lenta */
+        }
+
+        /* Texto Bienvenido */
+        #texto-bienvenida {
+            color: #d6d6d6;
+            font-family: sans-serif;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 2.5s ease 0.5s;
+            /* Aparece después del logo */
+        }
+
+        /* Clase para activar la aparición */
+        .mostrar {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+
+        /* Tu etiqueta main actual (Se asume que ya existe en tu web) */
+        main {
+            opacity: 0;
+            /* Invisible hasta que termine el splash */
+            transition: opacity 2s ease;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- CAPA DE BIENVENIDA (No interfiere con tu main) -->
+    <div id="pantalla-bienvenida">
+        <!-- REEMPLAZA "logo.png" CON TU IMAGEN -->
+        <img src="img/icon-192.png" alt="Logo" id="logo-bienvenida">
+        <h1 id="texto-bienvenida">Bienvenido</h1>
+    </div>
+
+
+    <div class="cover-site">
+        <div id="bgCover"></div>
+        <div class="bg-mask"></div>
+    </div>
+    <main>
+        <section id="player">
+            <div class="container">
+                <div class="row web-player">
+                    <div class="col-12 col-lg-10">
+                        <div class="row">
+                            <div class="col-12 col-md-5">
+
+                                <div class="cover-album">
+                                    <div id="currentCoverArt"></div>
+                                    <div class="watermark"></div>
+                                </div>
+
+                                <!--- Botones Redes Sociales--->
+                                <center>
+                                    <div class="redesSoc">
+                                        <a href="./nosotros/nosotros.html" target="_blank" rel="noopener" title="Nosotros" onmousedown="sonido.play()">
+                                            <img class="btnimg1" src="img/nosotros.png" width="28px" height="28px" alt="Nosotros" /></a>
+                                        &nbsp;
+
+                                        <a href="https://api.whatsapp.com/send/?phone=58 04121707235&text=Hermano%20estoy%20en%20sintonía,
+%20Dios%20le%20bendiga..." target="_blank" rel="noopener" title="Whatsapp" onmousedown="sonido.play()">
+                                            <img class="btnimg1" src="img/Whatsapp.png" width="28px" height="28px" alt="Whatsapp:" /></a>
+                                        &nbsp;
+
+                                        <a href="https://www.facebook.com/profile.php?id=100077660078810" target="_blank" rel="noopener" title="Facebook" onmousedown="sonido.play()">
+                                            <img class="btnimg1" src="img/Facebook.png" width="28px" height="28px" alt="Facebook" /></a>
+                                        &nbsp;
+
+                                        <a href="https://es.christiandaily.com" target="_blank" rel="noopener" title="Noticias" onmousedown="sonido.play()">
+                                            <img class="btnimg1" src="img/noticias.png" width="28px" height="28px" alt="Noticias" /></a>
+                                        &nbsp;
+
+                                        <a href="https://www.biblia.es/nueva-version-internacional.php" target="_blank" rel="noopener" title="Leer Bíblia">
+                                            <img class="btnimg1" src="img/libro1.png" width="28px" height="28px" alt="Leer Biblia" title="Leer Bíblia" onmousedown="sonido.play()"></a>
+
+                                        &nbsp;
+
+                                        <button type="button" title="Compartir" rel="noopener noreferrer" onclick="nativeShare();" onmousedown="sonido.play()"  style="background: none; border: none; padding: 0; cursor: pointer;">
+                                            <img id="btnCompartir" class="btnimg1" src="img/Compartir_0.png" width="28px" height="28px" alt="Compartir" /></button>
+
+                                    </div>
+                                </center>
+                                
+                                <!-----EN VIVO---->
+                          
+                          <div class="seccion-envivo">
+                            <div class="badge-vivo">En Vivo</div>
+                              </div>      
+                             
+                                             
+                            </div>
+
+
+                            <div class="col-12 ml-md-auto col-md-6">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="info-current-song">
+                                            <h2 style="color: #e96f07" id="currentSong" class="current-song text-uppercase">Música</h2>
+                                            <h3 id="currentArtist" class="current-artist text-captalize">Artista</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="row">
+
+
+                                            <div class="play-pause col-12 col-md-6 text-center">
+
+                                                <div class="play">
+                                                    <button type="button" class="btn-play" onclick="togglePlay()">
+                                                        <i id="playerButton" class="fa fa-play"></i>
+                                                        <span id="buttonPlay">PLAY</span>
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 text-center">
+                                                <div class="row volume-control">
+                                                    <div class="volume-icon col-1">
+                                                        <i class="fa fa-volume-up"></i>
+                                                    </div>
+                                                    <div class="volume-slide col-10 text-center">
+                                                        <input type="range" id="volume" step="1" min="0" max="100" value="80" onchange="updateVolume(this.value)">
+                                                        <label for="volume">Volumen:</label>
+                                                        <span id="volIndicator">80</span> %
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--------------------
+                                        <div class="row">
+                                           <div class="col-12 col-md-6 text-center call-lyrics">
+                                                <a href="#" class="lyrics" data-target="#modalLyrics">Letra de música</a> 
+                                            </div>
+                                        </div>
+										--------------------->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row historic hidden">
+                    <div class="col-12">
+                        <h2>Reciente:</h2>
+                        <div class="row" id="historicSong">
+                            <article class="col-12 col-md-6">
+                                <div class="cover-historic" id="cover-historic-1"></div>
+                                <div class="music-info">
+                                    <div class="song">Música</div>
+                                    <div class="artist">Artista</div>
+                                </div>
+                            </article>
+                            <!-----
+                            <article class="col-12 col-md-6">
+                                <div class="cover-historic" id="cover-historic-2"></div>
+                                <div class="music-info">
+                                    <div class="song">Música</div>
+                                    <div class="artist">Artista</div>
+                                </div>
+                            </article>  ----->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div class="modal fade" id="modalLyrics" tabindex="-1" role="dialog" aria-labelledby="lyricsSong" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lyricsSong">Letra</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" id="lyric"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    
+    <script>
+// 2. Registro del Service Worker (Corrección de etiquetas duplicadas)
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/service-worker.js')
+        .then(function(registration) {
+            console.log('Service Worker registrado con éxito:', registration);
+        })
+        .catch(function(err) {
+            console.log('Falha ao registrar o Service Worker:', err);
+        });
+    });
+}
+</script>
+
+<!---- Boton Compartir---->
+    
+   <script>
+document.getElementById('btnCompartir').addEventListener('click', async () => {
+    // 1. Definimos los datos de tu radio
+    const titulo = 'Radio Cristiana Omega';
+    const descripcion = 'Anunciando los tiempos del fin, según la Bíblia';
+    const enlaceWeb = 'https://thenweb.github.io/radiomegaonline/';
+
+    // 2. Creamos el bloque unificado de texto
+    const mensajeTexto = `*${titulo}*\n${descripcion}\n\n${enlaceWeb}`;
+
+    // 3. Compartimos mediante la API nativa o el fallback de WhatsApp
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: titulo,
+                text: mensajeTexto
+            });
+        } catch (error) {
+            console.error('Error al compartir:', error);
+        }
+    } else {
+        // Respaldo para computadoras de escritorio o navegadores antiguos
+        const urlWhatsApp = `https://whatsapp.com{encodeURIComponent(mensajeTexto)}`;
+        window.open(urlWhatsApp, '_blank');
+    }
+});
+
+</script> 
+
+ 
+    <center>
+        <div class="redes1">
+            <h6 style="color: white; border: none;"></h6>
+        </div>
+    </center>
+
+    <!--BOTON IR ARRIBA-->
+    <div class="button-arriba">
+        <a class="item" id="buttonTop">
+            <i class="fas fa-arrow-up"></i>
+        </a>
+    </div>
+    <script src="scriptbtn.js"></script>
+
+
+    <!---FOOTER---------->
+
+    <footer class="footer-clase">
+
+        <h2 class="titulo">
+            <span class="typed"></span>
+        </h2>
+
+        <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+        <script src="./js/main.js"></script>
+
+
+    </footer>
+
+    <script>
+        // pantalla-bienvenida
+        document.addEventListener('DOMContentLoaded', () => {
+            const splash = document.getElementById('pantalla-bienvenida');
+            const logo = document.getElementById('logo-bienvenida');
+            const texto = document.getElementById('texto-bienvenida');
+            const mainContenido = document.querySelector('main');
+
+            // 1. Hace aparecer el logo y el texto
+            setTimeout(() => {
+                logo.classList.add('mostrar');
+                texto.classList.add('mostrar');
+            }, 300);
+
+            // 2. Inicia la desaparición total tras 4.5 segundos
+            setTimeout(() => {
+                splash.style.opacity = '0';
+
+                // Muestra tu contenido principal suavemente
+                if (mainContenido) mainContenido.style.opacity = '1';
+
+                // 3. Elimina el splash y habilita el scroll
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 1500); // Tiempo de la transición de salida
+
+            }, 4500);
+        });
+
+    </script>
+</body>
+
+|</html>

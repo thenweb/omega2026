@@ -1,0 +1,853 @@
+/*Radio Omega*/
+
+@charset 'utf-8';
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,300;1,800&display=swap');
+@import url('bootstrap.min.css');
+
+
+
+
+html,
+body {
+    margin-top: 0px;
+    max-width: 100%;
+    overflow-x: hidden;
+
+}
+
+html {
+    background-color: #535353;
+    background-position: center;
+}
+
+body {
+    position: relative;
+    display: contents;
+    flex-flow: row;
+    justify-content: center;
+    overflow-x: hidden;
+    min-height: 100Vh;
+}
+
+
+.cover-site {
+    min-width: 100%;
+    min-height: 100%;
+    position: fixed;
+    background: url('../img/bg_site.jpg') no-repeat;
+    background-position: center;
+    background-size: cover;
+    transition: background-image 1s;
+    background-attachment: fixed;
+
+}
+
+.cover-site {
+
+    /*Opacocidad*/
+    filter: grayscale(10%) brightness(90%);
+    /* 100% blanco y negro, 80% de brillo (más oscuro) */
+    -webkit-filter: grayscale(15%) brightness(10%);
+    /* Para navegadores Safari y Chrome */
+
+
+}
+
+/* FONDO DESENFOQUE */
+
+#bgCover {
+
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*Aqui va (cover) */
+    background-position: center 20%;
+    -webkit-filter: blur(20px);
+    filter: blur(20px);
+    transition: all .5s linear;
+    transform: scale(2.2);
+    z-index: 1;
+}
+
+.bg-mask {
+
+    min-width: 100%;
+    min-height: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 2;
+
+}
+
+.web-player {
+    height: 100%;
+    color: #fefefe;
+    padding: 5px;
+    position: relative;
+    z-index: 3;
+    margin-top: 25px;
+}
+
+.cover-album {
+    max-width: 80%;
+    margin: auto;
+    background: url('../img/cover.png') no-repeat;
+    background-size: cover;
+    border: 0px solid #d3d3d3;
+    box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.4);
+    transition: background-image 1s;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/*EN VIVO--*/
+.seccion-envivo {
+    flex-direction: column;
+    /* Alinea elementos de identidad uno abajo del otro */
+    gap: 15px;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 20px;
+    
+}
+
+
+/* Código que ya tenías con la corrección de margin */
+.badge-vivo { 
+  display: inline-flex; 
+  align-items: center; 
+  background-color: rgba(217, 173, 89, 0.15); 
+  border: 2px solid #d9ad59; 
+  color: #f5cb79; 
+  padding: 2px 20px; 
+  border-radius: 50px; 
+  font-size: 1.1rem; 
+  font-weight: bold; 
+  text-transform: uppercase; 
+  letter-spacing: 2px; 
+} 
+
+.badge-vivo::before { 
+  content: ''; 
+  display: inline-block; 
+  width: 12px; /* Lo cambié a 12px para que sea un círculo perfecto junto con el height */
+  height: 12px; 
+  background-color: #ff0000; 
+  border-radius: 50%; 
+  margin-right: 14px; /* Eliminé el margin: 10 sin unidad que rompía este espacio */
+  animation: parpadeo 1.5s infinite; 
+}
+
+/* 🚀 AQUÍ ESTÁ LO QUE FALTABA: Definición de la animación */
+@keyframes parpadeo {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+        
+
+
+
+#currentCoverArt {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    transition: background-image 1s;
+    border: 0px solid #fefefe;
+    transition: opacity 1s ease-in-out, background-image 1s ease-in-out, transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    animation: mover-y-pausar 30s infinite;
+}
+
+@keyframes mover-y-pausar {
+
+    /* Mantiene la portada visible y quieta por 21 segundos (84% del tiempo) */
+    0%,
+    85% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    /* DESAPARICIÓN RÁPIDA: Se encoge y rota en solo 0.5 segundos (al llegar al segundo 21.5) */
+    86% {
+        transform: scale(0) rotate(20deg);
+    }
+
+    /* Se queda oculta durante 3 segundos para el cambio de carátula (segundos 21.5 a 24.5) */
+    98% {
+        transform: scale(0) rotate(20deg);
+    }
+
+    /* Efecto de rebote rápido al reaparecer al final del ciclo */
+    99.5% {
+        transform: scale(1.1) rotate(0deg);
+    }
+
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+
+.logo {
+    display: none;
+}
+
+.info-current-song {
+    -webkit-text-stroke: 0px black;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    text-shadow: 5px 5px #000;
+
+}
+
+
+.info-current-song h2 {
+    text-shadow: 2px 2px #000;
+    font-size: 23px;
+    /*text-transform: uppercase;*/
+    font-weight: 900;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 2px black, 2px 2px 4px black, 3px 3px 6px black;
+
+}
+
+.info-current-song h3 {
+    text-shadow: 0px 0px #000;
+    font-size: 16px;
+    font-weight: 900;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 2px black, 2px 2px 4px black, 3px 3px 6px black;
+
+}
+
+.current-song {
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+
+}
+
+.current-artist {
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 2px black, 2px 2px 4px black, 3px 3px 6px black;
+}
+
+.play-pause {
+    font-size: 35px;
+    /*Tamaño Margin Boton play*/
+}
+
+.play-pause i {
+    cursor: pointer;
+}
+
+.volume-icon {
+    font-size: 28px;
+    margin-top: -5px;
+}
+
+.volume-slide {
+    /* Adicionando sombra */
+    text-shadow: 4px 4px 3px rgba(0, 0, 0, 0.8);
+}
+
+.volume-control {
+    display: none;
+}
+
+.vagalume a {
+    color: #fefefe;
+    text-decoration: underline;
+}
+
+
+.lyrics {
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fefefe;
+    font-size: 1em;
+    font-weight: 400;
+    outline: none;
+    transition: .3s;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.lyrics:active {
+    text-decoration: none;
+    color: #fefefe;
+}
+
+.lyrics:visited {
+    text-decoration: none;
+    color: #fefefe;
+}
+
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fefefe !important;
+    border-radius: 20px;
+}
+
+.modal-content .btn {
+    border-radius: 20px;
+    background-color: #00E1E7;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Chrome */
+input[type=range] {
+    appearance: none;
+    background: transparent;
+    width: 100%;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    animation: 0.2s;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    background: #fefefe;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #fefefe;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -8px;
+}
+
+/* Firefox */
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    animation: 0.2s;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    background: #fefefe;
+}
+
+input[type=range]::-moz-range-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid #000000;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #fefefe;
+    cursor: pointer;
+}
+
+/* IE e Edge */
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    animation: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    border-width: 10px 0;
+    top: -10px;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: #fefefe;
+    border: 0px solid #000101;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: #fefefe;
+    border: 0px solid #000101;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+
+input[type=range]::-ms-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid #000000;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #fefefe;
+    cursor: pointer;
+}
+
+
+.historic h2 {
+    color: #fefefe;
+    border-bottom: 2px solid #fefefe;
+    font-size: 18px;
+    font-weight: bold;
+    /*text-transform: uppercase;*/
+    margin: 10px 0;
+    text-shadow: 4px 4px 5px rgba(0, 0, 0, 0.8);
+
+}
+
+
+/* ZONA FONDO CANCIONES SONADAS */
+
+.historic article {
+    margin: 5px 0;
+    padding: 6px;
+    background-color: none;
+
+}
+
+
+.historic article {
+    background: linear-gradient(to right, #7d7d7d, transparent);
+    max-width: 85%;
+    opacity: 100%;
+    border-radius: 10px 0px 0px 10px;
+    margin-left: 15px;
+}
+
+.historic .cover-historic {
+    width: 80px;
+    height: 80px;
+    margin-right: 15px;
+    float: left;
+    border-radius: 10px;
+    background: url('../img/cover.png') no-repeat;
+    background-size: cover;
+    border: 2px solid #fefefe;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-image 1s;
+}
+
+/* COLOR TEXTO INFO ARTISTA */
+.historic .music-info {
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.8);
+}
+
+
+/* COLOR TEXTO CANCION */
+
+.historic .music-info .song {
+    width: 100%;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: -5px;
+    color: white;
+    text-shadow: 4px 4px 5px rgba(0, 0, 0, 0.8);
+}
+
+@media(max-width: 270px) {
+    .cover-album {
+        max-width: 90%;
+    }
+}
+
+@media(min-width: 376px) {
+    .volume-control {
+        display: flex;
+    }
+
+    .call-lyrics {
+        margin-top: 20px;
+    }
+}
+
+@media(min-width: 168px) {
+    body {
+        align-items: center;
+    }
+
+    .h1-logo {
+        text-align: center;
+    }
+
+    .logo {
+        display: block;
+        z-index: 2;
+    }
+
+    .logo img {
+        max-width: 200px;
+    }
+
+    .web-player {
+        height: auto;
+        margin-top: 20px;
+    }
+
+    .cover-album {
+        margin: 10px auto;
+        min-width: 320px;
+        height: 320px;
+    }
+
+    .logo img {
+        max-width: 300px;
+        margin: 65px 0;
+    }
+
+    .info-current-song {
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .volume-control {
+        margin-top: 10%;
+    }
+}
+
+#buttonPlay {
+    padding-left: 10px;
+
+}
+
+#playerButton {
+    color: black;
+}
+
+.play-pause i {
+    cursor: pointer;
+    margin-top: 0px;
+}
+
+
+
+/*-----PLAY-------*/
+
+.btn-play {
+    background-color: #e96f07;
+    border: 3px solid #adacac;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+
+    width: 60px;
+    /* Ancho fijo */
+    height: 60px;
+    /* Alto idéntico al ancho */
+    border-radius: 50%;
+    /* Hace que sea un círculo perfecto */
+    padding: 0;
+    /* Elimina el espacio que lo estiraba */
+
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    transition: transform .2s;
+    box-shadow: 1px 3px #000000;
+    margin-top: -400%;
+}
+
+.play {
+    text-align: center;
+}
+
+/* Oculta el texto PLAY / PAUSA de forma segura */
+#buttonPlay {
+    display: none;
+}
+
+
+.btn-play {
+    /* ... (se mantienen tus estilos anteriores) ... */
+
+    /* Conecta la animación al botón */
+    animation: pulsoOnda 2s infinite ease-in-out;
+}
+
+/* Definición de la animación */
+@keyframes pulsoOnda {
+    0% {
+        box-shadow: 1px 3px #000000, 0 0 0 0 rgba(233, 111, 7, 0.7);
+    }
+
+    70% {
+        /* Mantiene tu sombra negra y expande la onda naranja */
+        box-shadow: 1px 3px #000000, 0 0 0 15px rgba(233, 111, 7, 0);
+    }
+
+    100% {
+        box-shadow: 1px 3px #000000, 0 0 0 0 rgba(233, 111, 7, 0);
+    }
+}
+
+/*Hasta aqui Btn PLAY-----------*/
+
+.play {
+    top: 1rem;
+    margin-top: 10px;
+}
+
+.btn-play:focus {
+    outline: 0;
+}
+
+.btn-play:hover {
+    box-shadow: 1px 5px #30303022;
+    transform: scale(1.1);
+}
+
+.close {
+    color: white;
+
+}
+
+/* Redes*/
+
+
+.redesSoc {
+    z-index: 1000;
+    margin: 5px, 3px, 3px, 3px;
+    position: relative;
+    padding: 0rem;
+    padding-top: center;
+    filter: drop-shadow(2px 1px 5px #000000)
+}
+
+/*Iconos de Redes*/
+.btnimg1 {
+    margin: 0px 2px 0px 2px;
+
+}
+
+
+.redes1 h6 {
+    text-shadow: 1px 1px #000;
+    letter-spacing: 0.2em;
+    font-family: sans-serif;
+    font-weight: bold;
+    filter: drop-shadow(2px 2px 2px #000)
+}
+
+.footer-clase {
+    position: relative;
+    background-image: linear-gradient(to bottom, rgba(128, 128, 128, 0), rgba(128, 128, 128, 2));
+    border-top: 0px solid white;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    top: -1px;
+    margin-top: 10px;
+
+}
+
+.typed {
+    color: #e96f07;
+    font-size: 30px;
+    filter: drop-shadow(2px 2px 2px #000)
+}
+
+
+/**BTN IR ARRIBA**/
+.button-arriba {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    transition: all .5s ease;
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 50%;
+}
+
+.button-arriba .item {
+    width: 0%;
+    height: 0%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    background-color: #bbbbbb;
+    border: 2px solid #2b2b2b;
+    color: #1b1b1b !important;
+    opacity: 0;
+    transform: scale(0);
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    transition: all .5s ease;
+}
+
+.shows {
+    animation: popup .5s ease-in-out !important;
+    transform: scale(1) !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    transition: all .5s ease;
+}
+
+@keyframes popup {
+    0% {
+        width: 0% !important;
+        height: 0% !important;
+        opacity: 0 !important;
+    }
+
+    50% {
+        width: 50% !important;
+        height: 50% !important;
+        opacity: 0.5 !important;
+    }
+
+    100% {
+        width: 100% !important;
+        height: 100% !important;
+        opacity: 1 !important;
+    }
+}
+
+
+@media only screen and (max-width: 757px) {
+
+    .historic article {
+        margin-left: 15px;
+    }
+
+    .info-current-song h2 {
+
+        text-align: center;
+    }
+
+    .info-current-song h3 {
+
+        text-align: center;
+    }
+
+
+
+    .cover-album {
+        max-width: 40%;
+        margin: auto;
+        background: url('../img/cover.png') no-repeat;
+        background-size: cover;
+        border: 0px solid #fefefe;
+        box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.5);
+        transition: background-image 1s;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .footer-clase {
+        position: relative;
+        background-image: linear-gradient(to bottom, rgba(128, 128, 128, 0), rgba(128, 128, 128, 3));
+        color: #ffffff;
+        text-align: center;
+        padding: 10px;
+        width: 100%;
+        height: 50px;
+        left: 0;
+        bottom: 0;
+        top: -5px;
+        margin-top: 10px;
+
+    }
+
+    .typed {
+        color: #e96f07;
+        bottom: 0;
+        margin: 0px;
+        font-size: 19px;
+        filter: drop-shadow(1px 1px 1px #000000)
+    }
+
+}
+
+@media only screen and (max-width: 480px) {
+
+    .info-current-song h2 {
+
+        text-align: center;
+    }
+
+    .info-current-song h3 {
+
+        text-align: center;
+    }
+
+
+
+    .cover-album {
+        max-width: 40%;
+        margin: auto;
+        background: url('../img/cover.png') no-repeat;
+        background-size: cover;
+        border: 0px solid #fefefe;
+        box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.5);
+        transition: background-image 1s;
+        border-radius: 10px;
+        margin-bottom: 15px;
+
+    }
+
+
+    @keyframes girar {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .footer-clase {
+        position: relative;
+        background-image: linear-gradient(to bottom, rgba(128, 128, 128, 0), rgba(128, 128, 128, 3));
+        color: #ffffff;
+        text-align: center;
+        padding: 10px;
+        width: 100%;
+        height: 50px;
+        left: 0;
+        bottom: 0;
+        top: -1px;
+        margin-top: 10px;
+
+    }
+
+    .typed {
+        padding: 0px;
+        bottom: 0;
+        color: e96f07;
+        font-size: 17px;
+        filter: drop-shadow(1px 1px 1px #000000)
+    }
+
+    .titulo {
+        position: relative;
+        top: -13px;
+        /* Sube el div */
+    }
+
+}
