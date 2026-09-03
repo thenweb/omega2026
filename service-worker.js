@@ -1,7 +1,7 @@
-// Define o nome do cache
+// Define el nombre de la caché
 const CACHE_NAME = 'v1_cache_Radio_Cristiana_Omega';
 
-// Lista de arquivos a serem cacheados
+Lista de archivos que se almacenarán en caché
 const urlsToCache = [
   '/',
   '/index.html',
@@ -25,10 +25,10 @@ const urlsToCache = [
   '/img/bg_site.jpg',
   '/audio/audio_tecnologia.mp3',
   '/audio/Beeps.mp3',
-  // Adicione outros recursos que deseja cache aqui
+//Agregue aquí otros recursos que desee almacenar en caché.
 ];
 
-// Instala o Service Worker e adiciona os arquivos ao cache
+// Instala el Service Worker y agrega los archivos a la caché.
 self.addEventListener('install', function (event) {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -39,17 +39,33 @@ self.addEventListener('install', function (event) {
     );
 });
 
-// Intercepta as solicitações e serve os arquivos em cache se disponíveis
+// Intercepta las solicitudes y sirve los archivos almacenados en caché si están disponibles.
 self.addEventListener('fetch', function (event) {
     event.respondWith(
         caches.match(event.request)
         .then(function (response) {
-            // Cache hit - retorna a resposta do cache
             if (response) {
                 return response;
             }
-            // Não encontrado no cache - busca na rede
             return fetch(event.request);
         })
     );
 });
+
+// Limpia los cachés antiguos cuando se activa un nuevo Service Worker
+self.addEventListener('activate', function (event) {
+    const cacheWhitelist = [CACHE_NAME];
+    event.waitUntil(
+        caches.keys().then(function (cacheNames) {
+            return Promise.all(
+                cacheNames.map(function (cacheName) {
+                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                        console.log('Borrando caché antiguo:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
+});;
+
