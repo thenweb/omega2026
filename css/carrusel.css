@@ -1,0 +1,82 @@
+/* ==========================================================================
+   CARRUSEL INFINITO CONTINUO (Copia este bloque al final de tu CSS)
+   ========================================================================== */
+
+:root {
+    /* Usamos nombres específicos para que no interfieran con otras variables de tu web */
+    --crsl-items-visibles: 4;
+    --crsl-gap: 20px;
+}
+
+/* El contenedor principal se adapta al ancho del contenedor donde lo metas en tu HTML */
+.carrusel-container {
+    width: 100%;
+    overflow: hidden;
+    /* Crucial para que no salga una barra de desplazamiento horizontal en tu web */
+    padding: 20px 0;
+    box-sizing: border-box;
+    
+}
+
+/* La pista interna que se mueve SOLA continuamente */
+.carrusel-track {
+    display: flex;
+    gap: var(--crsl-gap);
+    width: max-content;
+    /* Ajusta los segundos (ej: 80s) si quieres que vaya más lento o más rápido */
+    animation: carruselScrollContinuo 200s linear infinite;
+    will-change: transform;
+    /* Ayuda al navegador a procesar la animación de forma fluida */
+}
+
+/* Estilos exclusivos para las imágenes dentro de ESTE carrusel */
+.carrusel-track img {
+    /* Calcula el tamaño para que entren exactas las 4 en PC o 2 en móvil */
+    width: calc((100vw - (var(--crsl-gap) * (var(--crsl-items-visibles) - 1))) / var(--crsl-items-visibles));
+    max-width: 120px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    /* Mantiene tus imágenes de 500x500 perfectamente cuadradas */
+    object-fit: cover;
+    border-radius: 8px;
+    /* Opcional: bordes redondeados, puedes quitarlo si no te gusta */
+    box-sizing: border-box;
+    
+    user-select: none;           /* Evita la selección de texto e imágenes */
+    -webkit-user-drag: none;     /* Evita que pinchen y arrastren la imagen en Chrome/Safari */
+    pointer-events: none;        /* Desactiva por completo los clics y toques sobre la imagen */
+}
+
+/* Animación con nombre único para evitar conflictos */
+@keyframes carruselScrollContinuo {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+        /* Se desplaza exactamente la mitad para reiniciar el bucle */
+    }
+}
+
+/* RESPONSIVE: Ajuste automático para teléfonos móviles */
+@media (max-width: 768px) {
+    :root {
+        --crsl-items-visibles: 2; /* Sigue mostrando 2 imágenes en la abertura */
+        --crsl-gap: 10px;         /* Reducimos un poco la separación para ganar espacio */
+    }
+
+    /* Reducimos el margen del contenedor en móvil para que se vea más compacto */
+    .carrusel-container {
+        padding: 10px 0;
+        
+    }
+
+    /* AQUÍ ESTÁ EL TRUCO: Forzamos a que las imágenes sean más pequeñas en móvil */
+    .carrusel-track img {
+        /* Bajamos el tamaño máximo. Puedes cambiar 150px por el tamaño que más te guste */
+        max-width: 90px; 
+        
+        border-radius: 6px; /* Bordes un poco más finos acordes al tamaño pequeño */
+    }
+}
