@@ -25,6 +25,7 @@
     <link rel="icon" type="image/png" href="./img/cover-500.png" />
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/animate.css">
+	<link rel="stylesheet" href="css/carrusel.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="/manifest.json">
 
@@ -256,16 +257,24 @@
                 </div>
                 <div class="row historic hidden">
                     <div class="col-12">
-                        <h2>Reciente:</h2>
+                        <h2>Artistas:</h2>
                         <div class="row" id="historicSong">
-                            <article class="col-12 col-md-6">
+                        <!---CARRUSEL------->  
+                 <div class="carrusel-container">
+                    <div class="carrusel-track" id="carruselTrack">
+                       
+                    </div>
+                </div>     
+						
+							<!-----
+							<article class="col-12 col-md-6">
                                 <div class="cover-historic" id="cover-historic-1"></div>
                                 <div class="music-info">
                                     <div class="song">Música</div>
                                     <div class="artist">Artista</div>
                                 </div>
                             </article>
-                            <!-----
+                            
                             <article class="col-12 col-md-6">
                                 <div class="cover-historic" id="cover-historic-2"></div>
                                 <div class="music-info">
@@ -355,12 +364,13 @@ document.getElementById('btnCompartir').addEventListener('click', async () => {
         </div>
     </center>
 
-    <!--BOTON IR ARRIBA-->
+    <!--BOTON IR ARRIBA----
     <div class="button-arriba">
         <a class="item" id="buttonTop">
             <i class="fas fa-arrow-up"></i>
         </a>
     </div>
+	------->
     <script src="scriptbtn.js"></script>
 
 
@@ -409,6 +419,98 @@ document.getElementById('btnCompartir').addEventListener('click', async () => {
         });
 
     </script>
+
+<script>
+    //CARRUSEL
+    document.addEventListener("DOMContentLoaded", () => {
+    const track = document.getElementById("carruselTrack");
+    const carpeta = "carrusel"; // Nombre de tu carpeta
+    
+    let imagenesCargadas = [];
+    let totalEsperadas = 0;
+    let totalProcesadas = 0;
+    
+    // Configuración de optimización:
+    // Lanzamos bloques de búsqueda en paralelo. Súbelo si tienes muchísimas imágenes.
+    const rangoBusquedaInicial = 150; 
+
+    // Disparamos la carga de múltiples imágenes en paralelo simultáneamente
+    for (let i = 1; i <= rangoBusquedaInicial; i++) {
+        totalEsperadas++;
+        verificarImagenEnParalelo(i);
+    }
+
+    function verificarImagenEnParalelo(id) {
+        const img = new Image();
+        img.src = `${carpeta}/${id}.webp`;
+
+        img.onload = () => {
+            // Guardamos la imagen junto con su ID para poder ordenarlas correctamente después
+            imagenesCargadas.push({ id: id, src: img.src });
+            verificarProgreso();
+        };
+
+        img.onerror = () => {
+            // Si no existe (ej. la 101), simplemente ignoramos y contamos el proceso
+            verificarProgreso();
+        };
+    }
+
+    function verificarProgreso() {
+        totalProcesadas++;
+        
+        // Cuando todas las peticiones en paralelo terminen (exitosas o fallidas)
+        if (totalProcesadas === totalEsperadas) {
+            
+            // 1. Las ordenamos numéricamente (ya que al cargar en paralelo unas pueden terminar antes que otras)
+            imagenesCargadas.sort((a, b) => a.id - b.id);
+            
+            // 2. Validamos que no haya saltos numéricos al inicio
+            filtrarEIniciar();
+        }
+    }
+
+    function filtrarEIniciar() {
+        if (imagenesCargadas.length === 0) {
+            console.warn("No se encontraron imágenes en la carpeta.");
+            return;
+        }
+
+        // Aseguramos continuidad estricta: filtramos solo las consecutivas reales desde el 1
+        let secuenciasValidas = [];
+        for (let i = 0; i < imagenesCargadas.length; i++) {
+            if (imagenesCargadas[i].id === i + 1) {
+                secuenciasValidas.push(imagenesCargadas[i].src);
+            } else {
+                break; // Se rompe si falta un número intermedio
+            }
+        }
+
+        iniciarBucle(secuenciasValidas);
+    }
+
+    function iniciarBucle(listaImagenes) {
+        // Bloque 1: Insertamos tus imágenes ordenadas
+        listaImagenes.forEach(src => {
+            const nuevaImg = document.createElement("img");
+            nuevaImg.src = src;
+            track.appendChild(nuevaImg);
+        });
+
+        // Bloque 2: Clones para el bucle perfecto continuo
+        listaImagenes.forEach(src => {
+            const clonImg = document.createElement("img");
+            clonImg.src = src;
+            track.appendChild(clonImg);
+        });
+
+        // 🚫 Protección: Bloquea el menú del clic derecho
+        track.addEventListener('contextmenu', (e) => e.preventDefault());
+    }
+});
+
+    </script>
+	
 </body>
 
 |</html>
