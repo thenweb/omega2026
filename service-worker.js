@@ -1,45 +1,50 @@
 // Define el nombre de la caché
 const CACHE_NAME = 'v1_cache_Radio_Cristiana_Omega';
 
-Lista de archivos que se almacenarán en caché
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/nosotros/nosotros.html',
-  '/nosotros/style_nosotros.css',
-  '/css/style.css',
-  '/js/script.js',
-  '/js/main.js',
-  '/js/bootstrap.min.js',
-  '/img/cover.png',
-  '/img/logo-1200.png',
-  '/img/cover-500.png',
-  '/img/icon-192.png',
-  '/img/icon-512.png',
-  '/img/Compartir_0.png',
-  '/img/Facebook.png',
-  '/img/libro1.png',
-  '/img/nosotros.png',
-  '/img/noticias.png',
-  '/img/Whatsapp.png',
-  '/img/bg_site.jpg',
-  '/audio/audio_tecnologia.mp3',
-  '/audio/Beeps.mp3',
-//Agregue aquí otros recursos que desee almacenar en caché.
+  './',
+  './index.html',
+  './nosotros/nosotros.html',
+  './nosotros/style_nosotros.css',
+  './css/style.css',
+  './js/script.js',
+  './js/main.js',
+  './js/bootstrap.min.js',
+  './img/cover.png',
+  './img/logo-1200.png',
+  './img/cover-500.png',
+  './img/icon-192.png',
+  './img/icon-512.png',
+  './img/Compartir_0.png',
+  './img/Facebook.png',
+  './img/libro1.png',
+  './img/nosotros.png',
+  './img/noticias.png',
+  './img/Whatsapp.png',
+  './img/bg_site.jpg',
+  './audio/audio_tecnologia.mp3',
+  './audio/Beeps.mp3'
 ];
 
-// Instala el Service Worker y agrega los archivos a la caché.
+// Instala el Service Worker y agrega los archivos a la caché
 self.addEventListener('install', function (event) {
     event.waitUntil(
         caches.open(CACHE_NAME)
         .then(function (cache) {
-            console.log('Cache aberto');
-            return cache.addAll(urlsToCache);
+            console.log('Caché abierto con éxito');
+            // Usamos un bucle para evitar que un solo archivo faltante rompa toda la instalación
+            return Promise.all(
+                urlsToCache.map(function(url) {
+                    return cache.add(url).catch(function(error) {
+                        console.error('No se pudo precargar el archivo:', url, error);
+                    });
+                })
+            );
         })
     );
 });
 
-// Intercepta las solicitudes y sirve los archivos almacenados en caché si están disponibles.
+// Intercepta las solicitudes y sirve los archivos almacenados en caché si están disponibles
 self.addEventListener('fetch', function (event) {
     event.respondWith(
         caches.match(event.request)
@@ -65,7 +70,10 @@ self.addEventListener('activate', function (event) {
                     }
                 })
             );
+        }).then(function() {
+            return self.clients.claim();
         })
     );
-});;
+});
+
 
